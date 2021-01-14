@@ -3,11 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30517.126
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraryManagementAPI.WebApi", "LibraryManagementAPI\LibraryManagementAPI.WebApi.csproj", "{49285258-0C42-4BFF-9BFF-3D65F639ED47}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibraryManagementAPI.WebApi", "LibraryManagementAPI\LibraryManagementAPI.WebApi.csproj", "{49285258-0C42-4BFF-9BFF-3D65F639ED47}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5D7B0670-283D-4014-A037-CB3848DC6C95} = {5D7B0670-283D-4014-A037-CB3848DC6C95}
+		{74DCB3B0-4A3F-445A-AF4B-1709F3BF61D0} = {74DCB3B0-4A3F-445A-AF4B-1709F3BF61D0}
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraryManagementAPI.Data", "LibraryManagementAPI.Data\LibraryManagementAPI.Data.csproj", "{5D7B0670-283D-4014-A037-CB3848DC6C95}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibraryManagementAPI.Data", "LibraryManagementAPI.Data\LibraryManagementAPI.Data.csproj", "{5D7B0670-283D-4014-A037-CB3848DC6C95}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraryManagementAPI.Core", "LibraryManagementAPI.Core\LibraryManagementAPI.Core.csproj", "{74DCB3B0-4A3F-445A-AF4B-1709F3BF61D0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibraryManagementAPI.Core", "LibraryManagementAPI.Core\LibraryManagementAPI.Core.csproj", "{74DCB3B0-4A3F-445A-AF4B-1709F3BF61D0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
