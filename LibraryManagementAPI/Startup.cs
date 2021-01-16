@@ -1,3 +1,9 @@
+using System;
+using AutoMapper;
+using LibraryManagementAPI.Core.Repositories;
+using LibraryManagementAPI.Core.Repositories.Interfaces;
+using LibraryManagementAPI.Core.Services;
+using LibraryManagementAPI.Core.Services.Interfaces;
 using LibraryManagementAPI.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -37,6 +43,15 @@ namespace LibraryManagementAPI.WebApi
                     Title = "Library Management API"
                 });
             });
+
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+            services.AddScoped<IAuthorRepo, AuthorRepo>();
+            services.AddScoped<IAuthorService, AuthorService>();
+            services.AddScoped<IGenreRepo, GenreRepo>();
+            services.AddScoped<IGenreService, GenreService>();
+            services.AddScoped<IBookRepo, BookRepo>();
+            services.AddScoped<IBookService, BookService>();
 
         }
 
