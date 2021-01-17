@@ -31,7 +31,7 @@ namespace LibraryManagementAPI.Core.Repositories
 
         public async Task<Book> EditAsync(Book book)
         {
-            _context.Books.Update(book);
+            _context.Entry(book).Property(b => b.IsAvailable).IsModified = false;
             await _context.SaveChangesAsync();
             return book;
         }
@@ -59,6 +59,16 @@ namespace LibraryManagementAPI.Core.Repositories
         public async Task<Book> GetByIdAsync(int id)
         {
             return await _context.Books
+                                 .Include(b => b.Author)
+                                 .Include(b => b.Genre)
+                                 .Include(b => b.Orders)
+                                 .FirstOrDefaultAsync(book => book.Id == id);
+        }
+
+        public async Task<Book> GetByIdToEditAsync(int id)
+        {
+            return await _context.Books
+                                 .AsNoTracking()
                                  .FirstOrDefaultAsync(book => book.Id == id);
         }
     }

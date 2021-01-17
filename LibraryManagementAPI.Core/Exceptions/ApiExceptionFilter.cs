@@ -1,7 +1,7 @@
-﻿using System;
-using LibraryManagementAPI.Core.Resources;
+﻿using LibraryManagementAPI.Core.Resources;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Serilog;
 
 namespace LibraryManagementAPI.Core.Exceptions
 {
@@ -9,12 +9,20 @@ namespace LibraryManagementAPI.Core.Exceptions
     {
         public int Order { get; } = int.MaxValue - 10;
 
+       
         public void OnActionExecuted(ActionExecutedContext context)
         {
             if (context.Exception != null)
             {
                 ApiError apiError = null;
-                if (context.Exception is ApiException)
+                if (context.Exception is AuthException)
+                {
+                    apiError = new ApiError(MessagesResource.ACCESS_DENIED);
+                    context.HttpContext.Response.StatusCode = 401;
+
+                    Log.Error(context.Exception, apiError.Message);
+                }
+                else if(context.Exception is ApiException)
                 {
                     var ex = context.Exception as ApiException;
                     context.Exception = null;
@@ -24,11 +32,8 @@ namespace LibraryManagementAPI.Core.Exceptions
                     };
 
                     context.HttpContext.Response.StatusCode = ex.StatusCode;
-                }
-                else if (context.Exception is UnauthorizedAccessException)
-                {
-                    apiError = new ApiError(MessagesResource.ACCESS_DENIED);
-                    context.HttpContext.Response.StatusCode = 401;
+
+                    Log.Error(context.Exception, apiError.Message);
                 }
                 else
                 {
@@ -43,6 +48,8 @@ namespace LibraryManagementAPI.Core.Exceptions
                     apiError.StackTrace = stack;
 
                     context.HttpContext.Response.StatusCode = 500;
+
+                    Log.Error(context.Exception, apiError.Message);
                 }
                 context.Result = new JsonResult(apiError);
 

@@ -203,5 +203,14 @@ namespace LibraryManagementAPI.Core.Resources {
                 return ResourceManager.GetString("UNHANDLED_ERROR", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This user already exists!.
+        /// </summary>
+        public static string USER_ALREADY_EXISTS {
+            get {
+                return ResourceManager.GetString("USER_ALREADY_EXISTS", resourceCulture);
+            }
+        }
     }
 }

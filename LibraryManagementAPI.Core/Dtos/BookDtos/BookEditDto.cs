@@ -12,9 +12,6 @@ namespace LibraryManagementAPI.Core.Dtos
         [Required]
         public int YearOfPublishing { get; set; }
 
-        [Required]
-        public bool IsAvailable { get; set; }
-
         public int AuthorId { get; set; }
 
         public int GenreId { get; set; }

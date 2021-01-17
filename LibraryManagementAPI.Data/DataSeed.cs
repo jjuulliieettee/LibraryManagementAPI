@@ -63,14 +63,14 @@ namespace LibraryManagementAPI.Data
                     {
                         Name = "John Doe",
                         Email = "johndoe@yopmail.com",
-                        Password = "qwerty123", //TODO will be replaced by hashed password
+                        Password = BCrypt.Net.BCrypt.HashPassword("qwerty123"),
                         Role = UserRole.Librarian
                     },
                     new User
                     {
                         Name = "Jane Doe",
                         Email = "janedoe@yopmail.com",
-                        Password = "qwerty123", //TODO will be replaced by hashed password
+                        Password = BCrypt.Net.BCrypt.HashPassword("qwerty456"),
                         Role = UserRole.Reader
                     },
                 };

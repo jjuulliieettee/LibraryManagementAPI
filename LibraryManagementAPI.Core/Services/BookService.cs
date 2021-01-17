@@ -44,7 +44,7 @@ namespace LibraryManagementAPI.Core.Services
                 throw new ApiException(MessagesResource.BOOK_NOT_FOUND, 404);
             }
 
-            if (book.Orders.Any(o => o.IsBorrowed))
+            if (!book.IsAvailable)
             {
                 throw new ApiException(MessagesResource.BOOK_NOT_DELETABLE, 400);
             }
@@ -54,13 +54,13 @@ namespace LibraryManagementAPI.Core.Services
 
         public async Task<Book> EditAsync(Book book)
         {
-            Book bookOld = await _bookRepo.GetByIdAsync(book.Id);
+            Book bookOld = await _bookRepo.GetByIdToEditAsync(book.Id);
             if (bookOld == null)
             {
                 throw new ApiException(MessagesResource.BOOK_NOT_FOUND, 404);
             }
 
-            if (bookOld.Orders.Any(o => o.IsBorrowed))
+            if (!bookOld.IsAvailable)
             {
                 throw new ApiException(MessagesResource.BOOK_NOT_EDITABLE, 400);
             }

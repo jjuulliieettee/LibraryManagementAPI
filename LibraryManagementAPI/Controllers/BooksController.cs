@@ -6,12 +6,15 @@ using LibraryManagementAPI.Core.Dtos;
 using LibraryManagementAPI.Core.Exceptions;
 using LibraryManagementAPI.Core.Resources;
 using LibraryManagementAPI.Core.Services.Interfaces;
+using LibraryManagementAPI.Data.Enums;
 using LibraryManagementAPI.Data.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LibraryManagementAPI.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = nameof(UserRole.Librarian))]
     public class BooksController : ControllerBase
     {
         private readonly IBookService _bookService;
@@ -28,12 +31,14 @@ namespace LibraryManagementAPI.WebApi.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<object>>> GetAll([FromQuery]BookQueryParamsDto queryParams)
         {
             return Ok(await _bookService.GetAllAsync(queryParams));
         }
 
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public async Task<ActionResult<BookReadDto>> Get([FromRoute] int id)
         {
             BookReadDto book = _mapper.Map<BookReadDto>(await _bookService.GetByIdAsync(id));
@@ -58,6 +63,8 @@ namespace LibraryManagementAPI.WebApi.Controllers
             {
                 bookCreateDto.GenreId = await _genreService.SaveAsync(bookCreateDto.NewGenreName);
             }
+
+            bookCreateDto.IsAvailable = true;
 
             BookReadDto newBook = _mapper.Map<BookReadDto>(
                 await _bookService.AddAsync(_mapper.Map<Book>(bookCreateDto))

@@ -43,6 +43,7 @@ namespace LibraryManagementAPI.Core.Repositories
         public async Task<Author> GetByIdAsync(int id)
         {
             return await _context.Authors
+                                 .Include(author => author.Books)
                                  .AsNoTracking()
                                  .FirstOrDefaultAsync(author => author.Id == id);
         }

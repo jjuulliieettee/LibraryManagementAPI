@@ -10,6 +10,7 @@ namespace LibraryManagementAPI.Core.Repositories.Interfaces
         IQueryable<Book> GetAll();
         Task<IEnumerable<Book>> GetAllSimilarBooksAsync(Book book);
         Task<Book> GetByIdAsync(int id);
+        Task<Book> GetByIdToEditAsync(int id);
         Task<Book> AddAsync(Book book);
         Task<Book> EditAsync(Book book);
         Task DeleteAsync(Book book);

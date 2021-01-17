@@ -165,4 +165,7 @@
   <data name="UNHANDLED_ERROR" xml:space="preserve">
     <value>Something went wrong! Please, try again!</value>
   </data>
+  <data name="USER_ALREADY_EXISTS" xml:space="preserve">
+    <value>This user already exists!</value>
+  </data>
 </root>

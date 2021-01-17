@@ -6,12 +6,15 @@ using LibraryManagementAPI.Core.Dtos;
 using LibraryManagementAPI.Core.Exceptions;
 using LibraryManagementAPI.Core.Resources;
 using LibraryManagementAPI.Core.Services.Interfaces;
+using LibraryManagementAPI.Data.Enums;
 using LibraryManagementAPI.Data.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LibraryManagementAPI.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = nameof(UserRole.Librarian))]
     public class AuthorsController : ControllerBase
     {
         private readonly IAuthorService _authorService;
