@@ -12,7 +12,7 @@ namespace LibraryManagementAPI.Core.Repositories.Interfaces
         Task<Book> GetByIdAsync(int id);
         Task<Book> GetByIdToEditAsync(int id);
         Task<Book> AddAsync(Book book);
-        Task<Book> EditAsync(Book book);
+        Task<Book> EditAsync(Book book, bool changeAvailability = true);
         Task DeleteAsync(Book book);
     }
 }

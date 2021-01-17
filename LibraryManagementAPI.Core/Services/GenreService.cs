@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using LibraryManagementAPI.Core.Exceptions;
 using LibraryManagementAPI.Core.Repositories.Interfaces;
@@ -34,9 +35,9 @@ namespace LibraryManagementAPI.Core.Services
                 throw new ApiException(MessagesResource.GENRE_NOT_FOUND, 404);
             }
 
-            if (genre.Books != null)
+            if (genre.Books != null && genre.Books.Any())
             {
-                throw new ApiException(MessagesResource.GENRE_NOT_DELETABLE, 400);
+                throw new ApiException(MessagesResource.GENRE_NOT_DELETABLE);
             }
             await _genreRepo.DeleteAsync(genre);
         }
@@ -49,15 +50,15 @@ namespace LibraryManagementAPI.Core.Services
                 throw new ApiException(MessagesResource.GENRE_NOT_FOUND, 404);
             }
 
-            if (genreOld.Books != null)
+            if (genreOld.Books != null && genreOld.Books.Any())
             {
-                throw new ApiException(MessagesResource.GENRE_NOT_EDITABLE, 400);
+                throw new ApiException(MessagesResource.GENRE_NOT_EDITABLE);
             }
 
             Genre genreInDb = await _genreRepo.GetByNameAsync(genre.Name);
             if (genreInDb != null && genreInDb.Id != genre.Id)
             {
-                throw new ApiException(MessagesResource.GENRE_ALREADY_EXISTS, 400);
+                throw new ApiException(MessagesResource.GENRE_ALREADY_EXISTS);
             }
 
             return await _genreRepo.EditAsync(genre);

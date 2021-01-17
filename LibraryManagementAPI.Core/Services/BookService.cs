@@ -30,7 +30,7 @@ namespace LibraryManagementAPI.Core.Services
 
             if (booksInDb.Any())
             {
-                throw new ApiException(MessagesResource.BOOK_ALREADY_EXISTS, 400);
+                throw new ApiException(MessagesResource.BOOK_ALREADY_EXISTS);
             }
             return await _bookRepo.AddAsync(book);
         }
@@ -46,7 +46,7 @@ namespace LibraryManagementAPI.Core.Services
 
             if (!book.IsAvailable)
             {
-                throw new ApiException(MessagesResource.BOOK_NOT_DELETABLE, 400);
+                throw new ApiException(MessagesResource.BOOK_NOT_DELETABLE);
             }
 
             await _bookRepo.DeleteAsync(book);
@@ -62,17 +62,17 @@ namespace LibraryManagementAPI.Core.Services
 
             if (!bookOld.IsAvailable)
             {
-                throw new ApiException(MessagesResource.BOOK_NOT_EDITABLE, 400);
+                throw new ApiException(MessagesResource.BOOK_NOT_EDITABLE);
             }
 
             IEnumerable<Book> booksInDb = await _bookRepo.GetAllSimilarBooksAsync(book);
 
             if (booksInDb.Any())
             {
-                throw new ApiException(MessagesResource.BOOK_ALREADY_EXISTS, 400);
+                throw new ApiException(MessagesResource.BOOK_ALREADY_EXISTS);
             }
 
-            return await _bookRepo.EditAsync(book);
+            return await _bookRepo.EditAsync(book, false);
         }
 
         public async Task<IEnumerable<object>> GetAllAsync(BookQueryParamsDto queryParams)
@@ -83,8 +83,8 @@ namespace LibraryManagementAPI.Core.Services
                                  .Where(b => queryParams.Author == null || b.Author.Name.Contains(queryParams.Author))
                                  .Where(b => queryParams.Genre == null || b.Genre.Name.Contains(queryParams.Genre))
                                  .Where(b => queryParams.Year == null || b.YearOfPublishing == queryParams.Year)
-                                 .OrderByDynamic(queryParams.PropertyNameToOrder, queryParams.Ascending)
-                                 .ProjectTo<BookReadDto>(_mapper.ConfigurationProvider);
+                                 .ProjectTo<BookReadDto>(_mapper.ConfigurationProvider)
+                                 .OrderByDynamic(queryParams.PropertyNameToOrder, queryParams.Ascending);
             
             if (!string.IsNullOrEmpty(queryParams.PropertyNameToGroup))
             {
@@ -99,6 +99,18 @@ namespace LibraryManagementAPI.Core.Services
         public async Task<Book> GetByIdAsync(int id)
         {
             return await _bookRepo.GetByIdAsync(id);
+        }
+
+        public async Task<Book> ToggleAvailability(int id)
+        {
+            Book book = await _bookRepo.GetByIdToEditAsync(id);
+            if (book == null)
+            {
+                throw new ApiException(MessagesResource.BOOK_NOT_FOUND, 404);
+            }
+
+            book.IsAvailable = !book.IsAvailable;
+            return await _bookRepo.EditAsync(book);
         }
     }
 }

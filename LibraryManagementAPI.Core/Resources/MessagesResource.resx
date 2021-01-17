@@ -135,6 +135,9 @@
   <data name="BOOK_ALREADY_EXISTS" xml:space="preserve">
     <value>This book already exists!</value>
   </data>
+  <data name="BOOK_ALREADY_ORDERED" xml:space="preserve">
+    <value>This book has already been ordered!</value>
+  </data>
   <data name="BOOK_NOT_DELETABLE" xml:space="preserve">
     <value>This book cannot be deleted!</value>
   </data>
@@ -156,8 +159,20 @@
   <data name="GENRE_NOT_FOUND" xml:space="preserve">
     <value>Genre not found!</value>
   </data>
+  <data name="INVALID_INPUT" xml:space="preserve">
+    <value>Invalid input! Please, check input data!</value>
+  </data>
   <data name="MODEL_VALIDATION_ERROR" xml:space="preserve">
     <value>Please correct the errors in input data and try again!</value>
+  </data>
+  <data name="ORDER_ALREADY_EXISTS" xml:space="preserve">
+    <value>This order already exists!</value>
+  </data>
+  <data name="ORDER_NOT_DELETABLE" xml:space="preserve">
+    <value>This order cannot be deleted!</value>
+  </data>
+  <data name="ORDER_NOT_FOUND" xml:space="preserve">
+    <value>Order not found!</value>
   </data>
   <data name="SUCCESS_MESSAGE" xml:space="preserve">
     <value>Operation successful!</value>

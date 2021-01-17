@@ -6,7 +6,7 @@ namespace LibraryManagementAPI.Core.Dtos
     {
         public int Id { get; set; }
 
-        [Required]
+        [Required, StringLength(255, MinimumLength = 1), RegularExpression("^[a-zA-Z]+")]
         public string Title { get; set; }
 
         [Required]
@@ -16,8 +16,10 @@ namespace LibraryManagementAPI.Core.Dtos
 
         public int GenreId { get; set; }
 
+        [StringLength(120, MinimumLength = 2), RegularExpression("^[a-zA-Z]+")]
         public string NewAuthorName { get; set; }
 
+        [StringLength(120, MinimumLength = 2), RegularExpression("^[a-zA-Z]+")]
         public string NewGenreName { get; set; }
     }
 }

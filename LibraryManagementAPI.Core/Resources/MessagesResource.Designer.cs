@@ -115,6 +115,15 @@ namespace LibraryManagementAPI.Core.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This book has already been ordered!.
+        /// </summary>
+        public static string BOOK_ALREADY_ORDERED {
+            get {
+                return ResourceManager.GetString("BOOK_ALREADY_ORDERED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This book cannot be deleted!.
         /// </summary>
         public static string BOOK_NOT_DELETABLE {
@@ -178,11 +187,47 @@ namespace LibraryManagementAPI.Core.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid input! Please, check input data!.
+        /// </summary>
+        public static string INVALID_INPUT {
+            get {
+                return ResourceManager.GetString("INVALID_INPUT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please correct the errors in input data and try again!.
         /// </summary>
         public static string MODEL_VALIDATION_ERROR {
             get {
                 return ResourceManager.GetString("MODEL_VALIDATION_ERROR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This order already exists!.
+        /// </summary>
+        public static string ORDER_ALREADY_EXISTS {
+            get {
+                return ResourceManager.GetString("ORDER_ALREADY_EXISTS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This order cannot be deleted!.
+        /// </summary>
+        public static string ORDER_NOT_DELETABLE {
+            get {
+                return ResourceManager.GetString("ORDER_NOT_DELETABLE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Order not found!.
+        /// </summary>
+        public static string ORDER_NOT_FOUND {
+            get {
+                return ResourceManager.GetString("ORDER_NOT_FOUND", resourceCulture);
             }
         }
         

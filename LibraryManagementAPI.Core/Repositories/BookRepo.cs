@@ -29,9 +29,16 @@ namespace LibraryManagementAPI.Core.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<Book> EditAsync(Book book)
+        public async Task<Book> EditAsync(Book book, bool changeAvailability = true)
         {
-            _context.Entry(book).Property(b => b.IsAvailable).IsModified = false;
+            if (changeAvailability)
+            {
+                _context.Books.Update(book);
+            }
+            else
+            {
+                _context.Entry(book).Property(b => b.IsAvailable).IsModified = false;
+            }
             await _context.SaveChangesAsync();
             return book;
         }

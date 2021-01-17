@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using LibraryManagementAPI.Core.Repositories.Interfaces;
 using LibraryManagementAPI.Data;
@@ -28,12 +29,42 @@ namespace LibraryManagementAPI.Core.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<Order>> GetAllAsync()
+        public async Task<Order> EditAsync(Order order)
         {
-            return await _context.Orders.ToListAsync();
+            _context.Orders.Update(order);
+            await _context.SaveChangesAsync();
+            return order;
+        }
+
+        public IQueryable<Order> GetAll()
+        {
+            return _context.Orders
+                           .Include(o => o.Book)
+                           .Include(o => o.Librarian)
+                           .Include(o => o.Reader);
+        }
+
+        public async Task<IEnumerable<Order>> GetAllSimilarOrdersAsync(Order order)
+        {
+            return await _context.Orders
+                                 .Include(o => o.Book)
+                                 .Where(o => order.BookId == o.BookId
+                                             && !o.Book.IsAvailable)
+                                 .Where(o => order.Id != o.Id)
+                                 .ToListAsync();
         }
 
         public async Task<Order> GetByIdAsync(int id)
+        {
+            return await _context.Orders
+                                 .Include(o => o.Book)
+                                 .Include(o => o.Librarian)
+                                 .Include(o => o.Reader)
+                                 .AsNoTracking()
+                                 .FirstOrDefaultAsync(order => order.Id == id);
+        }
+
+        public async Task<Order> GetByIdToEditAsync(int id)
         {
             return await _context.Orders
                                  .AsNoTracking()

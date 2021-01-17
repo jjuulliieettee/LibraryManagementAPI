@@ -47,6 +47,7 @@ namespace LibraryManagementAPI.WebApi
                     .AddNewtonsoftJson(s =>
             {
                 s.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                s.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
             });
 
             services.Configure<ApiOptions>(Configuration.GetSection("Jwt"));
@@ -95,6 +96,8 @@ namespace LibraryManagementAPI.WebApi
             services.AddScoped<IBookService, BookService>();
             services.AddScoped<IUserRepo, UserRepo>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IOrderRepo, OrderRepo>();
+            services.AddScoped<IOrderService, OrderService>();
 
         }
 

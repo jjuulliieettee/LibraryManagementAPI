@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using LibraryManagementAPI.Core.Exceptions;
 using LibraryManagementAPI.Core.Repositories.Interfaces;
@@ -34,9 +35,9 @@ namespace LibraryManagementAPI.Core.Services
                 throw new ApiException(MessagesResource.AUTHOR_NOT_FOUND, 404);
             }
 
-            if (author.Books != null)
+            if (author.Books != null && author.Books.Any())
             {
-                throw new ApiException(MessagesResource.AUTHOR_NOT_DELETABLE, 400);
+                throw new ApiException(MessagesResource.AUTHOR_NOT_DELETABLE);
             }
             await _authorRepo.DeleteAsync(author);
         }
@@ -49,15 +50,15 @@ namespace LibraryManagementAPI.Core.Services
                 throw new ApiException(MessagesResource.AUTHOR_NOT_FOUND, 404);
             }
 
-            if (authorOld.Books != null)
+            if (authorOld.Books != null && authorOld.Books.Any())
             {
-                throw new ApiException(MessagesResource.AUTHOR_NOT_EDITABLE, 400);
+                throw new ApiException(MessagesResource.AUTHOR_NOT_EDITABLE);
             }
 
             Author authorInDb = await _authorRepo.GetByNameAsync(author.Name);
             if (authorInDb != null && authorInDb.Id != author.Id)
             {
-                throw new ApiException(MessagesResource.AUTHOR_ALREADY_EXISTS, 400);
+                throw new ApiException(MessagesResource.AUTHOR_ALREADY_EXISTS);
             }
 
             return await _authorRepo.EditAsync(author);
