@@ -11,7 +11,7 @@ namespace LibraryManagementAPI.Core.Services.Interfaces
         Task<Book> GetByIdAsync(int id);
         Task<Book> AddAsync(Book book);
         Task<Book> EditAsync(Book book);
-        Task DeleteAsync(int id);
+        Task<Book> DeleteAsync(int id);
         Task<Book> ToggleAvailability(int id);
     }
 }

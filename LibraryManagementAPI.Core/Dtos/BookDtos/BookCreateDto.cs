@@ -4,7 +4,7 @@ namespace LibraryManagementAPI.Core.Dtos
 {
     public class BookCreateDto
     {
-        [Required, StringLength(255, MinimumLength = 1), RegularExpression("^[a-zA-Z]+")]
+        [Required, StringLength(255, MinimumLength = 1), RegularExpression("^[\\p{L} \\.'\\-\\s]+$")]
         public string Title { get; set; }
 
         [Required]
@@ -16,10 +16,10 @@ namespace LibraryManagementAPI.Core.Dtos
 
         public int GenreId { get; set; }
 
-        [StringLength(120, MinimumLength = 2), RegularExpression("^[a-zA-Z]+")]
+        [StringLength(120, MinimumLength = 2), RegularExpression("^[\\p{L} \\.'\\-\\s]+$")]
         public string NewAuthorName { get; set; }
 
-        [StringLength(120, MinimumLength = 2), RegularExpression("^[a-zA-Z]+")]
+        [StringLength(120, MinimumLength = 2), RegularExpression("^[\\p{L} \\.'\\-\\s]+$")]
         public string NewGenreName { get; set; }
     }
 }

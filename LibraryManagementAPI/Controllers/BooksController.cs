@@ -8,6 +8,8 @@ using LibraryManagementAPI.Core.Resources;
 using LibraryManagementAPI.Core.Services.Interfaces;
 using LibraryManagementAPI.Data.Enums;
 using LibraryManagementAPI.Data.Models;
+using LibraryManagementAPI.Notifications.Dtos;
+using LibraryManagementAPI.Notifications.Services;
 using Microsoft.AspNetCore.Authorization;
 
 namespace LibraryManagementAPI.WebApi.Controllers
@@ -21,13 +23,16 @@ namespace LibraryManagementAPI.WebApi.Controllers
         private readonly IAuthorService _authorService;
         private readonly IGenreService _genreService;
         private readonly IMapper _mapper;
+        private readonly INotificationsService _notificationsService;
 
-        public BooksController(IBookService bookService, IMapper mapper, IAuthorService authorService, IGenreService genreService)
+        public BooksController(IBookService bookService, IMapper mapper, IAuthorService authorService, IGenreService genreService, 
+            INotificationsService notificationsService)
         {
             _bookService = bookService;
             _authorService = authorService;
             _genreService = genreService;
             _mapper = mapper;
+            _notificationsService = notificationsService;
         }
 
         [HttpGet]
@@ -69,6 +74,13 @@ namespace LibraryManagementAPI.WebApi.Controllers
             BookReadDto newBook = _mapper.Map<BookReadDto>(
                 await _bookService.AddAsync(_mapper.Map<Book>(bookCreateDto))
             );
+
+            await _notificationsService.AddBook(new BookDto
+            {
+                Author = newBook.Author,
+                Title = newBook.Title
+            });
+
             return CreatedAtAction("Get", new { id = newBook.Id }, newBook);
         }
 
@@ -83,7 +95,14 @@ namespace LibraryManagementAPI.WebApi.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete([FromRoute] int id)
         {
-            await _bookService.DeleteAsync(id);
+            Book book = await _bookService.DeleteAsync(id);
+
+            await _notificationsService.RemoveBook(new BookDto
+            {
+                Author = book.Author.Name,
+                Title = book.Title
+            });
+
             return Ok(new { message = MessagesResource.SUCCESS_MESSAGE });
         }
     }

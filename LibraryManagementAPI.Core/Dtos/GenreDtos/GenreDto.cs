@@ -6,7 +6,7 @@ namespace LibraryManagementAPI.Core.Dtos
     {
         public int Id { get; set; }
 
-        [Required]
+        [Required, StringLength(120, MinimumLength = 2), RegularExpression("^[\\p{L} \\.'\\-\\s]+$")]
         public string Name { get; set; }
     }
 }

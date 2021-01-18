@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibraryManagementAPI.Data",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibraryManagementAPI.Core", "LibraryManagementAPI.Core\LibraryManagementAPI.Core.csproj", "{74DCB3B0-4A3F-445A-AF4B-1709F3BF61D0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraryManagementAPI.Notifications", "LibraryManagementAPI.Notifications\LibraryManagementAPI.Notifications.csproj", "{4F5A588B-0D5E-43A8-8BBA-658CDEB9DCD2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,10 @@ Global
 		{74DCB3B0-4A3F-445A-AF4B-1709F3BF61D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{74DCB3B0-4A3F-445A-AF4B-1709F3BF61D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{74DCB3B0-4A3F-445A-AF4B-1709F3BF61D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F5A588B-0D5E-43A8-8BBA-658CDEB9DCD2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F5A588B-0D5E-43A8-8BBA-658CDEB9DCD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F5A588B-0D5E-43A8-8BBA-658CDEB9DCD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F5A588B-0D5E-43A8-8BBA-658CDEB9DCD2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

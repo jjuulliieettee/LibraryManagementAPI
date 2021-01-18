@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using AutoMapper;
 using LibraryManagementAPI.Core.Configs;
 using LibraryManagementAPI.Core.Exceptions;
@@ -7,6 +8,8 @@ using LibraryManagementAPI.Core.Repositories.Interfaces;
 using LibraryManagementAPI.Core.Services;
 using LibraryManagementAPI.Core.Services.Interfaces;
 using LibraryManagementAPI.Data;
+using LibraryManagementAPI.Notifications.Hubs;
+using LibraryManagementAPI.Notifications.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -38,6 +41,24 @@ namespace LibraryManagementAPI.WebApi
                     Configuration.GetConnectionString("DefaultConnection")
                 ).EnableSensitiveDataLogging()
             );
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CORS", builder =>
+                {
+                    builder
+                        .WithOrigins(
+                            Configuration["App:CorsOrigins"]
+                                .Split(",", StringSplitOptions.RemoveEmptyEntries)
+                                .ToArray()
+                        )
+                        .SetIsOriginAllowedToAllowWildcardSubdomains()
+                        .WithExposedHeaders("Location", "Upload-Offset", "Upload-Length")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials();
+                });
+            });
 
             services.AddControllers(options => options.Filters.Add(new ApiExceptionFilter()))
                     .ConfigureApiBehaviorOptions(options =>
@@ -85,6 +106,8 @@ namespace LibraryManagementAPI.WebApi
                 });
             });
 
+            services.AddSignalR();
+
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddScoped<IAuthService, AuthService>();
@@ -98,7 +121,7 @@ namespace LibraryManagementAPI.WebApi
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IOrderRepo, OrderRepo>();
             services.AddScoped<IOrderService, OrderService>();
-
+            services.AddScoped<INotificationsService, NotificationsService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, LibraryContext context)
@@ -107,6 +130,8 @@ namespace LibraryManagementAPI.WebApi
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors("CORS");
 
             app.UseSwagger();
             app.UseSwaggerUI(c =>
@@ -128,6 +153,7 @@ namespace LibraryManagementAPI.WebApi
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<NotificationsHub>("/notifications");
             });
         }
     }

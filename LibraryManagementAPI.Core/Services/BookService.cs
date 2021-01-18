@@ -35,7 +35,7 @@ namespace LibraryManagementAPI.Core.Services
             return await _bookRepo.AddAsync(book);
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task<Book> DeleteAsync(int id)
         {
             Book book = await _bookRepo.GetByIdAsync(id);
 
@@ -50,6 +50,8 @@ namespace LibraryManagementAPI.Core.Services
             }
 
             await _bookRepo.DeleteAsync(book);
+
+            return book;
         }
 
         public async Task<Book> EditAsync(Book book)

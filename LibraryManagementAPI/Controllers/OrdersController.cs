@@ -9,6 +9,8 @@ using LibraryManagementAPI.Core.Resources;
 using LibraryManagementAPI.Core.Services.Interfaces;
 using LibraryManagementAPI.Data.Enums;
 using LibraryManagementAPI.Data.Models;
+using LibraryManagementAPI.Notifications.Dtos;
+using LibraryManagementAPI.Notifications.Services;
 using Microsoft.AspNetCore.Authorization;
 
 namespace LibraryManagementAPI.WebApi.Controllers
@@ -21,11 +23,14 @@ namespace LibraryManagementAPI.WebApi.Controllers
         private readonly IOrderService _orderService;
         private readonly IBookService _bookService;
         private readonly IMapper _mapper;
-        public OrdersController(IOrderService orderService, IMapper mapper, IBookService bookService)
+        private readonly INotificationsService _notificationsService;
+        public OrdersController(IOrderService orderService, IMapper mapper, IBookService bookService, 
+            INotificationsService notificationsService)
         {
             _orderService = orderService;
             _bookService = bookService;
             _mapper = mapper;
+            _notificationsService = notificationsService;
         }
 
         [HttpGet]
@@ -57,7 +62,13 @@ namespace LibraryManagementAPI.WebApi.Controllers
                 await _orderService.AddAsync(_mapper.Map<Order>(orderCreateDto))
             );
 
-            await _bookService.ToggleAvailability(newOrder.BookId);
+            Book book = await _bookService.ToggleAvailability(newOrder.BookId);
+
+            await _notificationsService.OrderBook(new BookDto
+            {
+                Author = (await _bookService.GetByIdAsync(book.Id)).Author.Name,
+                Title = book.Title
+            });
 
             return CreatedAtAction("Get", new { id = newOrder.Id }, newOrder);
         }

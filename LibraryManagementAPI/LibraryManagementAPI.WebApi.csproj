@@ -22,6 +22,7 @@
   <ItemGroup>
     <ProjectReference Include="..\LibraryManagementAPI.Core\LibraryManagementAPI.Core.csproj" />
     <ProjectReference Include="..\LibraryManagementAPI.Data\LibraryManagementAPI.Data.csproj" />
+    <ProjectReference Include="..\LibraryManagementAPI.Notifications\LibraryManagementAPI.Notifications.csproj" />
   </ItemGroup>
 
   
