@@ -19,22 +19,37 @@ namespace LibraryManagementAPI.Core.Services
     {
         private readonly IOrderRepo _orderRepo;
         private readonly IMapper _mapper;
-        public OrderService(IOrderRepo orderRepo, IMapper mapper)
+        private readonly IBookService _bookService;
+        public OrderService(IOrderRepo orderRepo, IMapper mapper, IBookService bookService)
         {
             _orderRepo = orderRepo;
             _mapper = mapper;
+            _bookService = bookService;
         }
 
         public async Task<Order> AddAsync(Order order)
         {
-            order.BorrowDate = DateTime.Now;
+            if (order.BorrowDate.Date < DateTime.Today)
+            {
+                throw new ApiException(MessagesResource.INVALID_INPUT);
+            }
+
             order.IsBorrowed = false;
 
             IEnumerable<Order> ordersInDb = await _orderRepo.GetAllSimilarOrdersAsync(order);
 
-            if (ordersInDb.Any())
+            if (ordersInDb.Any(o => o.IsBorrowed || o.BorrowDate.Date >= DateTime.Today))
             {
                 throw new ApiException(MessagesResource.BOOK_ALREADY_ORDERED);
+            }
+
+            List<Order> ordersToDelete = ordersInDb
+                                         .Where(o => !o.IsBorrowed && o.BorrowDate.Date < DateTime.Today && o.ReturnDate == null)
+                                         .ToList();
+            if (ordersToDelete.Any())
+            {
+                await _orderRepo.DeleteManyAsync(ordersToDelete);
+                await _bookService.ToggleAvailability(ordersToDelete.FirstOrDefault().BookId);
             }
 
             return await _orderRepo.AddAsync(order);

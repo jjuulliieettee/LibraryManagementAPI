@@ -75,7 +75,7 @@ namespace LibraryManagementAPI.Core.Repositories
         public async Task<Book> GetByIdToEditAsync(int id)
         {
             return await _context.Books
-                                 .AsNoTracking()
+                                 //.AsNoTracking()
                                  .FirstOrDefaultAsync(book => book.Id == id);
         }
     }

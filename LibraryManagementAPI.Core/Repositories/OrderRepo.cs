@@ -29,6 +29,12 @@ namespace LibraryManagementAPI.Core.Repositories
             await _context.SaveChangesAsync();
         }
 
+        public async Task DeleteManyAsync(List<Order> orders)
+        {
+            _context.RemoveRange(orders);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<Order> EditAsync(Order order)
         {
             _context.Orders.Update(order);
@@ -47,7 +53,6 @@ namespace LibraryManagementAPI.Core.Repositories
         public async Task<IEnumerable<Order>> GetAllSimilarOrdersAsync(Order order)
         {
             return await _context.Orders
-                                 .Include(o => o.Book)
                                  .Where(o => order.BookId == o.BookId
                                              && !o.Book.IsAvailable)
                                  .Where(o => order.Id != o.Id)

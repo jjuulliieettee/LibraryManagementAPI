@@ -14,5 +14,6 @@ namespace LibraryManagementAPI.Core.Repositories.Interfaces
         Task<Order> AddAsync(Order order);
         Task<Order> EditAsync(Order order);
         Task DeleteAsync(Order order);
+        Task DeleteManyAsync(List<Order> orders);
     }
 }
