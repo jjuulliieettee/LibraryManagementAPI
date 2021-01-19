@@ -11,7 +11,7 @@ You must specify a valid auth token for each request, which returns 401, in Auth
 ## **Basic project description**
 There are 5 main entities: ***Books, Authors, Genres, Orders, Users***, who are assigned a role of a *Reader and Librarian*.
 
-A *Reader* can book a book and it becomes unavailable.
+A *Reader* can book a book for a specified date and it becomes unavailable.
 
 A *Librarian* can confirm the order (when the reader takes the book from the library). Then the book becomes borrowed.
 
@@ -73,7 +73,10 @@ The *Librarian* closes the order when the Reader returns the book. The book beco
 3. To add a new order, use **Orders/Post** endpoint. You have to be authorized as *reader*. You receive a *real-time notification* about this action.
 4. To delete an existing order, use **Orders/Delete** endpoint. You have to be authorized as *reader*.
 
-***Note:*** you cannot delete an order since it has been marked as borrowed.
+***Note:*** 
+
+* You cannot delete an order since it has been marked as borrowed.
+* If a reader has not taken their book on time, it becomes available again and somebody else can borrow it. The outdated order is deleted when somebody else books the book.
 
 5. To confirm an order, use **Orders/Take order** endpoint. You have to be authorized as *librarian*.
 6. To close an order, use **Orders/Return order** endpoint. You have to be authorized as *librarian*.
